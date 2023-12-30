@@ -1,63 +1,56 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const tempMovieData = [
   {
-    imdbID: "tt15398776",
-    Title: "Oppenheimer",
-    Year: "2013",
-    Poster: "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_SX300.jpg",
+    imdbID: "tt1375666",
+    Title: "Inception",
+    Year: "2010",
+    Poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
   },
   {
-    imdbID: "tt1517268",
-    Title: "Barbie",
-    Year: "2023",
-    Poster: "https://m.media-amazon.com/images/M/MV5BNjU3N2QxNzYtMjk1NC00MTc4LTk1NTQtMmUxNTljM2I0NDA5XkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg",
+    imdbID: "tt0133093",
+    Title: "The Matrix",
+    Year: "1999",
+    Poster: "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg",
   },
   {
-    imdbID: "tt8589698",
-    Title: "Teenage Mutant Ninja Turtles: Mutant Mayhem",
-    Year: "2023",
-    Poster: "https://m.media-amazon.com/images/M/MV5BYzE4MTllZTktMTIyZS00Yzg1LTg1YzAtMWQwZTZkNjNkODNjXkEyXkFqcGdeQXVyMTUzMTg2ODkz._V1_SX300.jpg",
+    imdbID: "tt6751668",
+    Title: "Parasite",
+    Year: "2019",
+    Poster: "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_SX300.jpg",
   },
 ];
 
 const tempWatchedData = [
   {
-    imdbID: "tt15398776",
-    Title: "Oppenheimer",
-    Year: "2013",
-    Poster: "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_SX300.jpg",
-    runtime: 180,
-    imdbRating: 8.6,
+    imdbID: "tt1375666",
+    Title: "Inception",
+    Year: "2010",
+    Poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
+    runtime: 148,
+    imdbRating: 8.8,
     userRating: 10,
   },
   {
-    imdbID: "tt1517268",
-    Title: "Barbie",
-    Year: "2023",
-    Poster: "https://m.media-amazon.com/images/M/MV5BNjU3N2QxNzYtMjk1NC00MTc4LTk1NTQtMmUxNTljM2I0NDA5XkEyXkFqcGdeQXVyODE5NzE3OTE@._V1_SX300.jpg",
-    runtime: 114,
-    imdbRating: 7.2,
-    userRating: 8,
+    imdbID: "tt0088763",
+    Title: "Back to the Future",
+    Year: "1985",
+    Poster: "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
+    runtime: 116,
+    imdbRating: 8.5,
+    userRating: 9,
   },
 ];
 
-const average = (arr) => arr.reduce((acc, cur) => acc + cur, 0) / arr.length;
+const average = (arr) => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 function Logo() {
   return (
     <div className="logo">
-      <span role="img" aria-label="ticket">
-        🎫
-      </span>
+      <span role="img">🎫</span>
       <h1>Movie</h1>
     </div>
   );
-}
-
-function Search() {
-  const [query, setQuery] = useState("");
-  return <input className="search" type="text" placeholder="Search movies..." value={query} onChange={(e) => setQuery(e.target.value)} />;
 }
 
 function NumResults() {
@@ -68,17 +61,32 @@ function NumResults() {
   );
 }
 
-function MovieList({ isOpen1, toggleIsOpen1 }) {
-  const [movies, setMovies] = useState(tempMovieData);
+function Search() {
+  const [query, setQuery] = useState("");
+  return <input className="search" type="text" placeholder="Search movies..." value={query} onChange={(e) => setQuery(e.target.value)} />;
+}
 
+function Navbar() {
+  return (
+    <nav className="nav-bar">
+      <Logo />
+      <Search />
+      <NumResults />
+    </nav>
+  );
+}
+
+function ListBox() {
+  const [movies, setMovies] = useState(tempMovieData);
+  const [isOpen1, setIsOpen1] = useState(true);
   return (
     <div className="box">
-      <button className="btn-toggle" onClick={toggleIsOpen1}>
+      <button className="btn-toggle" onClick={() => setIsOpen1((open) => !open)}>
         {isOpen1 ? "–" : "+"}
       </button>
       {isOpen1 && (
         <ul className="list">
-          {movies.map((movie) => (
+          {movies?.map((movie) => (
             <li key={movie.imdbID}>
               <img src={movie.Poster} alt={`${movie.Title} poster`} />
               <h3>{movie.Title}</h3>
@@ -96,16 +104,16 @@ function MovieList({ isOpen1, toggleIsOpen1 }) {
   );
 }
 
-function WatchedList({ isOpen2, toggleIsOpen2 }) {
+function ListWatched() {
   const [watched, setWatched] = useState(tempWatchedData);
+  const [isOpen2, setIsOpen2] = useState(true);
 
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
-
   return (
     <div className="box">
-      <button className="btn-toggle" onClick={toggleIsOpen2}>
+      <button className="btn-toggle" onClick={() => setIsOpen2((open) => !open)}>
         {isOpen2 ? "–" : "+"}
       </button>
       {isOpen2 && (
@@ -160,30 +168,20 @@ function WatchedList({ isOpen2, toggleIsOpen2 }) {
   );
 }
 
+function Main() {
+  return (
+    <main className="main">
+      <ListBox />
+      <ListWatched />
+    </main>
+  );
+}
+
 export default function App() {
-  const [isOpen1, setIsOpen1] = useState(true);
-  const [isOpen2, setIsOpen2] = useState(true);
-
-  const toggleIsOpen1 = () => {
-    setIsOpen1((prevIsOpen1) => !prevIsOpen1);
-  };
-
-  const toggleIsOpen2 = () => {
-    setIsOpen2((prevIsOpen2) => !prevIsOpen2);
-  };
-
   return (
     <>
-      <nav className="nav-bar">
-        <Logo />
-        <Search />
-        <NumResults />
-      </nav>
-
-      <main className="main">
-        <MovieList isOpen1={isOpen1} toggleIsOpen1={toggleIsOpen1} />
-        <WatchedList isOpen2={isOpen2} toggleIsOpen2={toggleIsOpen2} />
-      </main>
+      <Navbar />
+      <Main />
     </>
   );
 }
